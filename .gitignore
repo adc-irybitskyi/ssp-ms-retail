@@ -1,12 +1,57 @@
-*.class
+######################
+# Build Unwanted
+######################
+.gradle
+build
+/target/**
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+######################
+# Node
+######################
+/node/**
+/node_modules/**
 
-# Package Files #
-*.jar
-*.war
-*.ear
+######################
+# Windows
+######################
+# Windows image file caches
+Thumbs.db
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+# Folder config file
+Desktop.ini
+
+######################
+# Mac OSX
+######################
+.DS_Store
+.svn
+
+######################
+# Eclipse
+######################
+*.pydevproject
+.project
+.metadata
+/bin/**
+/tmp/**
+/tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/**
+.loadpath
+
+######################
+# Intellij
+######################
+.idea/**
+*.iml
+*.iws
+*.ipr
+*.ids
+*.orig
+
+
