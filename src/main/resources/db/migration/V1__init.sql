@@ -7,6 +7,3 @@ CREATE TABLE stores (
     updated_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (store_id),
 );
-
-INSERT INTO stores (name, created_by, updated_by) VALUES ('store-1', 0, 0);
-INSERT INTO stores (name, created_by, updated_by) VALUES ('store-2', 0, 0);

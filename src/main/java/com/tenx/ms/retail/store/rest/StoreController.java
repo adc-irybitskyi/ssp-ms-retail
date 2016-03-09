@@ -11,10 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api(value = "stores", description = "Store Entity Management API")
 @RestController("storeControllerV1")
@@ -39,8 +36,9 @@ public class StoreController {
         return new ResourceCreated<Long>(storeService.addStore(store));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @ApiOperation(value = "Finds all stores", authorizations = { @Authorization("ROLE_ADMIN")})
+//TODO:    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @ApiOperation(value = "Finds all stores", authorizations = { @Authorization("ROLE_ADMIN")})
+    @ApiOperation(value = "Finds all stores")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Successful retrieval of stores"),
         @ApiResponse(code = 500, message = "Internal server error")}
@@ -51,5 +49,37 @@ public class StoreController {
         LOGGER.debug("Fetching all stores: {}", pageable);
 
         return storeService.getAllStores(pageable, RestConstants.VERSION_ONE + "/stores");
+    }
+
+    @ApiOperation(value = "Find store by id")
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "Successful retrieval of store"),
+        @ApiResponse(code = 404, message = "Store can't be found by id"),
+        @ApiResponse(code = 500, message = "Internal server error")}
+    )
+    @RequestMapping(value = {"/{storeId:\\d+}"}, method = RequestMethod.GET)
+    public Store getStoreById(
+        @ApiParam(name = "storeId", value = "The id of the store to get its details")
+        @PathVariable() long storeId) {
+
+        LOGGER.debug("Fetching store by store id: {}", storeId);
+
+        return storeService.getStoreById(storeId).get();
+    }
+
+    @ApiOperation(value = "Find store by name")
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "Successful retrieval of store"),
+        @ApiResponse(code = 404, message = "Store can't be found by name"),
+        @ApiResponse(code = 500, message = "Internal server error")}
+    )
+    @RequestMapping(value = {"/{storeName:.*[a-zA-Z].*}"}, method = RequestMethod.GET)
+    public Store getStoreByName(
+        @ApiParam(name = "storeName", value = "The name of the store to get its details")
+        @PathVariable String storeName) {
+
+        LOGGER.debug("Fetching store by store name: {}", storeName);
+
+        return storeService.getStoreByName(storeName).get();
     }
 }

@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -65,7 +66,7 @@ public class StoreControllerTest extends AbstractIntegrationTest {
                 ResponseEntity<String> response = getJSONResponse(
                     template,
                     String.format(REQUEST_URI, basePath()),
-                    FileUtils.readFileToString(addStore1Request),
+                    null,
                     HttpMethod.GET);
                 String received = response.getBody();
 
@@ -78,14 +79,61 @@ public class StoreControllerTest extends AbstractIntegrationTest {
             }
             //get Store by Id
             {
-                //TODO: Implement it
+                ResponseEntity<String> response = getJSONResponse(
+                    template,
+                    String.format(REQUEST_URI, basePath()) + storeId,
+                    null,
+                    HttpMethod.GET);
+                String received = response.getBody();
+
+                assertEquals("HTTP Status code incorrect", HttpStatus.OK, response.getStatusCode());
+
+                //Paginated<Store> list = mapper.readValue(received, Paginated.class);
+                Store store = mapper.readValue(received, Store.class);
+                assertThat(store, is(notNullValue()));
+                assertThat(store.getName(), is("store-1"));
             }
             //get Store by Name
             {
-                //TODO: Implement it
+                ResponseEntity<String> response = getJSONResponse(
+                    template,
+                    String.format(REQUEST_URI, basePath()) + "store-1",
+                    null,
+                    HttpMethod.GET);
+                String received = response.getBody();
+
+                assertEquals("HTTP Status code incorrect", HttpStatus.OK, response.getStatusCode());
+
+                //Paginated<Store> list = mapper.readValue(received, Paginated.class);
+                Store store = mapper.readValue(received, Store.class);
+                assertThat(store, is(notNullValue()));
+                assertThat(store.getStoreId(), is(storeId.longValue()));
+                assertThat(store.getName(), is("store-1"));
             }
         } catch (IOException e) {
             fail(e.getMessage());
         }
+    }
+
+    @Test
+    public void unknownStoreId(){
+        ResponseEntity<String> response = getJSONResponse(
+            template,
+            String.format(REQUEST_URI, basePath()) + "/" + "111",
+            null,
+            HttpMethod.GET);
+
+        assertEquals("HTTP Status code incorrect", HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    public void unknownStoreName(){
+        ResponseEntity<String> response = getJSONResponse(
+            template,
+            String.format(REQUEST_URI, basePath()) + "/" + "unknownName",
+            null,
+            HttpMethod.GET);
+
+        assertEquals("HTTP Status code incorrect", HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 }

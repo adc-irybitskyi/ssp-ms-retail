@@ -22,6 +22,10 @@ public class StoreService {
         return storeRepository.findOneByStoreId(storeId).map(this::toStoreDTO);
     }
 
+    public Optional<Store> getStoreByName(String storeName) {
+        return storeRepository.findOneByName(storeName).map(this::toStoreDTO);
+    }
+
     public Paginated<Store> getAllStores(Pageable pageable, String baseLinkPath) {
         Page<StoreEntity> page = storeRepository.findAll(pageable);
 
