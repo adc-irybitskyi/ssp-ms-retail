@@ -116,6 +116,17 @@ public class StoreControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
+    public void invalidAddStoreRequest(){
+        ResponseEntity<String> response = getJSONResponse(
+            template,
+            String.format(REQUEST_URI, basePath()),
+            "{}",
+            HttpMethod.POST);
+
+        assertEquals("HTTP Status code incorrect", HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    @Test
     public void unknownStoreId(){
         ResponseEntity<String> response = getJSONResponse(
             template,

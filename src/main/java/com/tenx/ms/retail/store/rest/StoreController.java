@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Api(value = "stores", description = "Store Entity Management API")
@@ -29,7 +30,7 @@ public class StoreController {
         @ApiResponse(code = 500, message = "Internal server error")}
     )
     @RequestMapping(method = RequestMethod.POST)
-    public ResourceCreated addStore(@RequestBody Store store) {
+    public ResourceCreated addStore(@Validated @RequestBody Store store) {
 
         LOGGER.debug("Add new store: {}", store);
 
