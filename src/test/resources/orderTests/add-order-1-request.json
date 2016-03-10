@@ -1,0 +1,17 @@
+{
+    "order_date": "2016-03-10T18:25:43",
+    "products": [
+        {
+            "product_id": 101,
+            "count": 1
+        },
+        {
+            "product_id": 102,
+            "count": 2
+        }
+    ],
+    "first_name": "firstNameValue",
+    "last_name": "lastNameValue",
+    "email": "email@tenx.com",
+    "phone": "1234567890"
+}

@@ -28,3 +28,22 @@ CREATE TABLE stocks (
 	available_count BIGINT UNSIGNED NOT NULL,
 	PRIMARY KEY (product_id, store_id)
 );
+
+CREATE TABLE orders (
+	order_id BIGINT UNSIGNED NOT NULL,
+	store_id BIGINT UNSIGNED NOT NULL,
+	order_date timestamp  NOT NULL,
+	status tinyint NOT NULL,
+	first_name VARCHAR(50) NOT NULL,
+	last_name VARCHAR(50) NOT NULL,
+	email VARCHAR(255) NOT NULL,
+	phone CHAR(10) NOT NULL,
+	PRIMARY KEY (order_id)
+);
+
+CREATE TABLE order_products (
+	order_id BIGINT UNSIGNED NOT NULL,
+	product_id BIGINT UNSIGNED NOT NULL,
+	product_count BIGINT UNSIGNED NOT NULL,
+	PRIMARY KEY (order_id)
+);

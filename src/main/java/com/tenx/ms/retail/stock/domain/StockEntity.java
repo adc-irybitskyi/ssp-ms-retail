@@ -9,7 +9,6 @@ import java.io.Serializable;
 @Table(name = "stocks")
 @IdClass(StockPK.class)
 public class StockEntity implements Serializable {
-    //No identifier specified for entity: com.tenx.ms.retail.stock.domain.StockEntity
 
     @Id
     @Column(name = "product_id")

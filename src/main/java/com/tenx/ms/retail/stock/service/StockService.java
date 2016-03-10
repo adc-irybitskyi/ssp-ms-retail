@@ -11,8 +11,8 @@ public class StockService {
     @Autowired
     private StockRepository stockRepository;
 
-    public void updateStock(StockDTO Stock) {
-        stockRepository.save(toStockEntity(Stock));
+    public void updateStock(StockDTO stock) {
+        stockRepository.save(toStockEntity(stock));
     }
 
     private StockEntity toStockEntity(StockDTO stock) {

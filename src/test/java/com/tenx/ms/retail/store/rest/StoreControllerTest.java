@@ -89,7 +89,6 @@ public class StoreControllerTest extends AbstractIntegrationTest {
 
                 assertEquals("HTTP Status code incorrect", HttpStatus.OK, response.getStatusCode());
 
-                //Paginated<Store> list = mapper.readValue(received, Paginated.class);
                 StoreDTO store = mapper.readValue(received, StoreDTO.class);
                 assertThat(store, is(notNullValue()));
                 assertThat(store.getName(), is("store-1"));
@@ -105,7 +104,6 @@ public class StoreControllerTest extends AbstractIntegrationTest {
 
                 assertEquals("HTTP Status code incorrect", HttpStatus.OK, response.getStatusCode());
 
-                //Paginated<Store> list = mapper.readValue(received, Paginated.class);
                 StoreDTO store = mapper.readValue(received, StoreDTO.class);
                 assertThat(store, is(notNullValue()));
                 assertThat(store.getStoreId(), is(storeId.longValue()));

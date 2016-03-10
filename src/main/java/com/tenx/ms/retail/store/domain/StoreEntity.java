@@ -18,7 +18,7 @@ public class StoreEntity implements Serializable {
     @Column(name = "store_id")
     private Long storeId;
 
-    @Column(name = "name", length = 50)
+    @Column(name = "name", length = 50, unique = true)
     @NotNull
     @Size(max = 50)
     private String name;
