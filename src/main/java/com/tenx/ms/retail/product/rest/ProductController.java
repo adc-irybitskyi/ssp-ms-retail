@@ -22,7 +22,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @ApiOperation(value = "Get Product details by Id")
+    @ApiOperation(value = "Add a Product")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Successful retrieval of Product details"),
         @ApiResponse(code = 412, message = "Invalid ProductEntity"),

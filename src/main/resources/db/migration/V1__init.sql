@@ -19,5 +19,12 @@ CREATE TABLE products (
     updated_by bigint(20) NOT NULL,
     created_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	PRIMARY KEY (store_id),
+	PRIMARY KEY (store_id)
+);
+
+CREATE TABLE stocks (
+	product_id BIGINT UNSIGNED NOT NULL,
+	store_id BIGINT UNSIGNED NOT NULL,
+	available_count BIGINT UNSIGNED NOT NULL,
+	PRIMARY KEY (product_id, store_id)
 );

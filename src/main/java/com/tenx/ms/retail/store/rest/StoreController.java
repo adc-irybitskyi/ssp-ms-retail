@@ -22,7 +22,7 @@ public class StoreController {
     @Autowired
     private StoreService storeService;
 
-    @ApiOperation(value = "Get store details by Id")
+    @ApiOperation(value = "Add a Store")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Successful retrieval of store details"),
         @ApiResponse(code = 412, message = "Invalid StoreEntity"),
