@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "stores")
@@ -16,6 +18,8 @@ public class StoreEntity {
     private Long storeId;
 
     @Column(name = "name", length = 50)
+    @NotNull
+    @Size(max = 50)
     private String name;
 
     public Long getStoreId() {
@@ -45,12 +49,12 @@ public class StoreEntity {
 
         StoreEntity that = (StoreEntity) o;
 
-        return storeId.equals(that.storeId);
+        return storeId != null ? storeId.equals(that.storeId) : that.storeId == null;
     }
 
     @Override
     public int hashCode() {
-        return storeId.hashCode();
+        return storeId != null ? storeId.hashCode() : 0;
     }
 
     @Override

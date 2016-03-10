@@ -11,6 +11,7 @@ import com.tenx.ms.retail.store.rest.dto.Store;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.TestRestTemplate;
@@ -37,7 +38,8 @@ public class StoreControllerTest extends AbstractIntegrationTest {
     private static final String REQUEST_URI = "%s/v1/stores/";
     private final RestTemplate template = new TestRestTemplate();
 
-    ObjectMapper mapper = new ObjectMapper();
+    @Autowired
+    ObjectMapper mapper;
 
     @Value("classpath:storeTests/add-store-1-request.json")
     private File addStore1Request;
@@ -72,7 +74,6 @@ public class StoreControllerTest extends AbstractIntegrationTest {
 
                 assertEquals("HTTP Status code incorrect", HttpStatus.OK, response.getStatusCode());
 
-                //Paginated<Store> list = mapper.readValue(received, Paginated.class);
                 Paginated<Store> storePaginated = mapper.readValue(received, new TypeReference<Paginated<Store>>(){});
                 assertThat(storePaginated.getTotalCount(), is(1L));
                 assertThat(storePaginated.getContent().get(0).getName(), is("store-1"));
@@ -123,14 +124,14 @@ public class StoreControllerTest extends AbstractIntegrationTest {
             "{}",
             HttpMethod.POST);
 
-        assertEquals("HTTP Status code incorrect", HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("HTTP Status code incorrect", HttpStatus.PRECONDITION_FAILED, response.getStatusCode());
     }
 
     @Test
     public void unknownStoreId(){
         ResponseEntity<String> response = getJSONResponse(
             template,
-            String.format(REQUEST_URI, basePath()) + "/" + "111",
+            String.format(REQUEST_URI, basePath()) + "/" + "111/",
             null,
             HttpMethod.GET);
 
