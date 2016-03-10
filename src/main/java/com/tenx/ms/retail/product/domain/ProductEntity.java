@@ -26,10 +26,12 @@ public class ProductEntity {
     @NotNull
     @Column(name = "sku", length = 10)
     @Size(min = 5, max = 10)
+    //an adhoc SKU allowing only alpha-numeric with a min length of 5 and max of 10
     private String sku;
 
     @NotNull
     @Column(name = "price")
+    //TODO: Must allow for XXX.XX format
     private Double price;
 
     public Long getStoreId() {
@@ -50,6 +52,42 @@ public class ProductEntity {
         return this;
     }
 
+    public Long getProductId() {
+        return productId;
+    }
+
+    public ProductEntity setProductId(Long productId) {
+        this.productId = productId;
+        return this;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public ProductEntity setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public ProductEntity setSku(String sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public ProductEntity setPrice(Double price) {
+        this.price = price;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -59,44 +97,12 @@ public class ProductEntity {
 
         ProductEntity that = (ProductEntity) o;
 
-        return storeId.equals(that.storeId);
+        return productId != null ? productId.equals(that.productId) : that.productId == null;
     }
 
     @Override
     public int hashCode() {
-        return storeId.hashCode();
-    }
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getSku() {
-        return sku;
-    }
-
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
+        return productId != null ? productId.hashCode() : 0;
     }
 
     @Override

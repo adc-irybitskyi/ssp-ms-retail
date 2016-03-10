@@ -1,4 +1,4 @@
-package com.tenx.ms.retail.store.rest;
+package com.tenx.ms.retail.product.rest;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,7 +7,7 @@ import com.tenx.ms.commons.rest.dto.Paginated;
 import com.tenx.ms.commons.rest.dto.ResourceCreated;
 import com.tenx.ms.commons.tests.AbstractIntegrationTest;
 import com.tenx.ms.retail.RetailServiceApp;
-import com.tenx.ms.retail.store.rest.dto.StoreDTO;
+import com.tenx.ms.retail.product.rest.dto.ProductDTO;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,41 +27,40 @@ import java.io.IOException;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = RetailServiceApp.class)
 @ActiveProfiles(Profiles.TEST_NOAUTH)
-public class StoreControllerTest extends AbstractIntegrationTest {
-    private static final String REQUEST_URI = "%s/v1/stores/";
+public class ProductControllerTest extends AbstractIntegrationTest {
+    private static final String REQUEST_URI = "%s/v1/products/";
+
     private final RestTemplate template = new TestRestTemplate();
 
     @Autowired
     ObjectMapper mapper;
 
-    @Value("classpath:storeTests/add-store-1-request.json")
-    private File addStore1Request;
+    @Value("classpath:productTests/add-product-1-request.json")
+    private File addProduct1Request;
 
     @Test
     public void happyPath() {
-        Integer storeId;
+        Integer productId;
         try {
-            //add Store
+            //add Product
             {
                 ResponseEntity<String> response = getJSONResponse(
                     template,
                     String.format(REQUEST_URI, basePath()),
-                    FileUtils.readFileToString(addStore1Request),
+                    FileUtils.readFileToString(addProduct1Request),
                     HttpMethod.POST);
                 String received = response.getBody();
 
                 assertEquals("HTTP Status code incorrect", HttpStatus.OK, response.getStatusCode());
 
                 ResourceCreated rc = mapper.readValue(received, ResourceCreated.class);
-                storeId = (Integer) rc.getId();
-                assertThat(storeId > 0, is(true));
+                productId = (Integer) rc.getId();
+                assertThat(productId > 0, is(true));
             }
             //get All
             {
@@ -74,42 +73,42 @@ public class StoreControllerTest extends AbstractIntegrationTest {
 
                 assertEquals("HTTP Status code incorrect", HttpStatus.OK, response.getStatusCode());
 
-                Paginated<StoreDTO> storePaginated = mapper.readValue(received, new TypeReference<Paginated<StoreDTO>>(){});
-                assertThat(storePaginated.getTotalCount(), is(1L));
-                assertThat(storePaginated.getContent().get(0).getName(), is("store-1"));
+                Paginated<ProductDTO> productPaginated = mapper.readValue(received, new TypeReference<Paginated<ProductDTO>>(){});
+                assertThat(productPaginated.getTotalCount(), is(1L));
+                assertThat(productPaginated.getContent().get(0).getName(), is("product-1"));
             }
-            //get Store by Id
+            //get Product by Id
             {
                 ResponseEntity<String> response = getJSONResponse(
                     template,
-                    String.format(REQUEST_URI, basePath()) + storeId,
+                    String.format(REQUEST_URI, basePath()) + productId,
                     null,
                     HttpMethod.GET);
                 String received = response.getBody();
 
                 assertEquals("HTTP Status code incorrect", HttpStatus.OK, response.getStatusCode());
 
-                //Paginated<Store> list = mapper.readValue(received, Paginated.class);
-                StoreDTO store = mapper.readValue(received, StoreDTO.class);
-                assertThat(store, is(notNullValue()));
-                assertThat(store.getName(), is("store-1"));
+                //Paginated<Product> list = mapper.readValue(received, Paginated.class);
+                ProductDTO product = mapper.readValue(received, ProductDTO.class);
+                assertThat(product, is(notNullValue()));
+                assertThat(product.getName(), is("product-1"));
             }
-            //get Store by Name
+            //get Product by Name
             {
                 ResponseEntity<String> response = getJSONResponse(
                     template,
-                    String.format(REQUEST_URI, basePath()) + "store-1",
+                    String.format(REQUEST_URI, basePath()) + "product-1",
                     null,
                     HttpMethod.GET);
                 String received = response.getBody();
 
                 assertEquals("HTTP Status code incorrect", HttpStatus.OK, response.getStatusCode());
 
-                //Paginated<Store> list = mapper.readValue(received, Paginated.class);
-                StoreDTO store = mapper.readValue(received, StoreDTO.class);
-                assertThat(store, is(notNullValue()));
-                assertThat(store.getStoreId(), is(storeId.longValue()));
-                assertThat(store.getName(), is("store-1"));
+                //Paginated<Product> list = mapper.readValue(received, Paginated.class);
+                ProductDTO product = mapper.readValue(received, ProductDTO.class);
+                assertThat(product, is(notNullValue()));
+                assertThat(product.getProductId(), is(productId.longValue()));
+                assertThat(product.getName(), is("product-1"));
             }
         } catch (IOException e) {
             fail(e.getMessage());
@@ -117,7 +116,7 @@ public class StoreControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void invalidAddStoreRequest(){
+    public void invalidAddProductRequest(){
         ResponseEntity<String> response = getJSONResponse(
             template,
             String.format(REQUEST_URI, basePath()),
@@ -128,7 +127,7 @@ public class StoreControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void unknownStoreId(){
+    public void unknownProductId(){
         ResponseEntity<String> response = getJSONResponse(
             template,
             String.format(REQUEST_URI, basePath()) + "/" + "111/",
@@ -139,7 +138,7 @@ public class StoreControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void unknownStoreName(){
+    public void unknownProductName(){
         ResponseEntity<String> response = getJSONResponse(
             template,
             String.format(REQUEST_URI, basePath()) + "/" + "unknownName",

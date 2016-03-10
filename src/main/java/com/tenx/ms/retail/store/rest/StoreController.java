@@ -3,14 +3,13 @@ package com.tenx.ms.retail.store.rest;
 import com.tenx.ms.commons.rest.RestConstants;
 import com.tenx.ms.commons.rest.dto.Paginated;
 import com.tenx.ms.commons.rest.dto.ResourceCreated;
-import com.tenx.ms.retail.store.rest.dto.Store;
+import com.tenx.ms.retail.store.rest.dto.StoreDTO;
 import com.tenx.ms.retail.store.service.StoreService;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,11 +29,12 @@ public class StoreController {
         @ApiResponse(code = 500, message = "Internal server error")}
     )
     @RequestMapping(method = RequestMethod.POST)
-    public ResourceCreated addStore(@Validated @RequestBody Store store) {
+    public ResourceCreated addStore(@Validated @RequestBody
+    StoreDTO store) {
 
         LOGGER.debug("Add new store: {}", store);
 
-        return new ResourceCreated<Long>(storeService.addStore(store));
+        return new ResourceCreated<>(storeService.addStore(store));
     }
 
 //TODO:    @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -45,7 +45,7 @@ public class StoreController {
         @ApiResponse(code = 500, message = "Internal server error")}
     )
     @RequestMapping(method = RequestMethod.GET)
-    public Paginated<Store> getAllStores(Pageable pageable) {
+    public Paginated<StoreDTO> getAllStores(Pageable pageable) {
 
         LOGGER.debug("Fetching all stores: {}", pageable);
 
@@ -59,7 +59,7 @@ public class StoreController {
         @ApiResponse(code = 500, message = "Internal server error")}
     )
     @RequestMapping(value = {"/{storeId:\\d+}"}, method = RequestMethod.GET)
-    public Store getStoreById(
+    public StoreDTO getStoreById(
         @ApiParam(name = "storeId", value = "The id of the store to get its details")
         @PathVariable() long storeId) {
 
@@ -75,7 +75,7 @@ public class StoreController {
         @ApiResponse(code = 500, message = "Internal server error")}
     )
     @RequestMapping(value = {"/{storeName:.*[a-zA-Z].*}"}, method = RequestMethod.GET)
-    public Store getStoreByName(
+    public StoreDTO getStoreByName(
         @ApiParam(name = "storeName", value = "The name of the store to get its details")
         @PathVariable String storeName) {
 

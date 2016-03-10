@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
-public class Store {
+public class StoreDTO {
     @ApiModelProperty("The store ID - (readonly)")
     private Long storeId;
 
@@ -17,7 +17,7 @@ public class Store {
         return storeId;
     }
 
-    public Store setStoreId(Long storeId) {
+    public StoreDTO setStoreId(Long storeId) {
         this.storeId = storeId;
         return this;
     }
@@ -26,7 +26,7 @@ public class Store {
         return name;
     }
 
-    public Store setName(String name) {
+    public StoreDTO setName(String name) {
         this.name = name;
         return this;
     }

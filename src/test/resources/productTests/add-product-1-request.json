@@ -1,0 +1,7 @@
+{
+    "store_id": "1",
+    "name": "product-1",
+    "description": "product-description",
+    "sku": "ABC123",
+    "price": 123.45
+}
