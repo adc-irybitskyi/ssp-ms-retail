@@ -1,5 +1,6 @@
 package com.tenx.ms.retail.order.domain;
 
+import com.tenx.ms.retail.order.util.OrderStatus;
 import com.tenx.ms.retail.product.domain.ProductEntity;
 import org.hibernate.validator.constraints.Email;
 
@@ -29,8 +30,7 @@ public class OrderEntity implements Serializable {
 
     @NotNull
     @Column(name = "status")
-    //TODO: use enum here
-    private Integer status;
+    private OrderStatus status;
 
     @NotNull
     @OneToMany
@@ -83,11 +83,11 @@ public class OrderEntity implements Serializable {
         return this;
     }
 
-    public Integer getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public OrderEntity setStatus(Integer status) {
+    public OrderEntity setStatus(OrderStatus status) {
         this.status = status;
         return this;
     }

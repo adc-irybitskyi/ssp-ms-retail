@@ -3,6 +3,7 @@ package com.tenx.ms.retail.order.rest;
 import com.tenx.ms.commons.rest.RestConstants;
 import com.tenx.ms.retail.order.rest.dto.OrderDTO;
 import com.tenx.ms.retail.order.service.OrderService;
+import com.tenx.ms.retail.order.util.OrderStatus;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,6 @@ public class OrderController {
 
         return orderService.addOrder(order
             .setStoreId(storeId)
-            .setStatus(1));//TODO: Convert it to enum
+            .setStatus(OrderStatus.ORDERED));
     }
 }

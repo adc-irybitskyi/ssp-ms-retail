@@ -5,6 +5,7 @@ import com.tenx.ms.commons.config.Profiles;
 import com.tenx.ms.commons.tests.AbstractIntegrationTest;
 import com.tenx.ms.retail.RetailServiceApp;
 import com.tenx.ms.retail.order.rest.dto.OrderDTO;
+import com.tenx.ms.retail.order.util.OrderStatus;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -57,7 +58,7 @@ public class OrderControllerTest extends AbstractIntegrationTest {
         OrderDTO order = mapper.readValue(received, OrderDTO.class);
         assertThat(order, is(notNullValue()));
         assertThat(order.getStoreId(), is(storeId));
-        assertThat(order.getStatus(), is(1));//TODO: use Order Status Enum
+        assertThat(order.getStatus(), is(OrderStatus.ORDERED));
     }
 
     @Test

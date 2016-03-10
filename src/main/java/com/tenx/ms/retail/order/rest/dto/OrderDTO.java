@@ -1,5 +1,6 @@
 package com.tenx.ms.retail.order.rest.dto;
 
+import com.tenx.ms.retail.order.util.OrderStatus;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Email;
 
@@ -20,8 +21,7 @@ public class OrderDTO {
     private Date orderDate;
 
     @ApiModelProperty("read only (output should be in label form)")
-    //TODO: Use Enum
-    private Integer status;
+    private OrderStatus status;
 
     @ApiModelProperty("one or more products purchased")
     @NotNull
@@ -67,11 +67,11 @@ public class OrderDTO {
         return this;
     }
 
-    public Integer getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public OrderDTO setStatus(Integer status) {
+    public OrderDTO setStatus(OrderStatus status) {
         this.status = status;
         return this;
     }
