@@ -6,14 +6,19 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "order_products")
-@IdClass(OrderProductPK.class)
 public class OrderProductEntity implements Serializable {
 
     @Id
-    @Column(name = "order_id")
-    private Long orderId;
+    @Column(name = "order_product_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    @Id
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="order_id")
+    @NotNull
+    private OrderEntity order;
+
+    @NotNull
     @Column(name = "product_id")
     private Long productId;
 
@@ -30,12 +35,13 @@ public class OrderProductEntity implements Serializable {
         return this;
     }
 
-    public Long getOrderId() {
-        return orderId;
+    public OrderEntity getOrder() {
+        return order;
     }
 
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
+    public OrderProductEntity setOrder(OrderEntity order) {
+        this.order = order;
+        return this;
     }
 
     public Long getCount() {
@@ -56,15 +62,14 @@ public class OrderProductEntity implements Serializable {
 
         OrderProductEntity that = (OrderProductEntity) o;
 
-        if (orderId != null ? !orderId.equals(that.orderId) : that.orderId != null)
+        if (order != null ? !order.equals(that.order) : that.order != null)
             return false;
         return productId != null ? productId.equals(that.productId) : that.productId == null;
-
     }
 
     @Override
     public int hashCode() {
-        int result = orderId != null ? orderId.hashCode() : 0;
+        int result = order != null ? order.hashCode() : 0;
         result = 31 * result + (productId != null ? productId.hashCode() : 0);
         return result;
     }

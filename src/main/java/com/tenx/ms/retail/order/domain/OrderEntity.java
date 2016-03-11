@@ -33,8 +33,8 @@ public class OrderEntity implements Serializable {
     private OrderStatus status;
 
     @NotNull
-    @OneToMany
-    private Set<ProductEntity> products;
+    @OneToMany(mappedBy = "order")
+    private Set<OrderProductEntity> products;
 
     @NotNull
     @Size(max = 50)
@@ -128,12 +128,30 @@ public class OrderEntity implements Serializable {
         return this;
     }
 
-    public Set<ProductEntity> getProducts() {
+    public Set<OrderProductEntity> getProducts() {
         return products;
     }
 
-    public OrderEntity setProducts(Set<ProductEntity> products) {
+    public OrderEntity setProducts(Set<OrderProductEntity> products) {
         this.products = products;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        OrderEntity entity = (OrderEntity) o;
+
+        return orderId != null ? orderId.equals(entity.orderId) : entity.orderId == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return orderId != null ? orderId.hashCode() : 0;
     }
 }

@@ -5,6 +5,7 @@ import com.tenx.ms.commons.config.Profiles;
 import com.tenx.ms.commons.tests.AbstractIntegrationTest;
 import com.tenx.ms.retail.RetailServiceApp;
 import com.tenx.ms.retail.order.rest.dto.OrderDTO;
+import com.tenx.ms.retail.order.rest.dto.OrderProductDTO;
 import com.tenx.ms.retail.order.util.OrderStatus;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
@@ -59,6 +60,19 @@ public class OrderControllerTest extends AbstractIntegrationTest {
         assertThat(order, is(notNullValue()));
         assertThat(order.getStoreId(), is(storeId));
         assertThat(order.getStatus(), is(OrderStatus.ORDERED));
+        assertThat(order.getOrderDate(), is(notNullValue()));
+        assertThat(order.getProducts(), is(notNullValue()));
+
+        assertThat(order.getProducts().size(), is(2));
+        assertThat(order.getProducts().contains(new OrderProductDTO().setProductId(101L)), is(true));
+        assertThat(order.getProducts().contains(new OrderProductDTO().setProductId(102L)), is(true));
+
+        order.getProducts().stream()
+            .filter(o -> o.getProductId() == 101L)
+            .forEach(o -> assertThat(o.getCount(), is(1L)));
+        order.getProducts().stream()
+            .filter(o -> o.getProductId() == 102L)
+            .forEach(o -> assertThat(o.getCount(), is(2L)));
     }
 
     @Test
