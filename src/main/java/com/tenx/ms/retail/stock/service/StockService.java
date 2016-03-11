@@ -11,6 +11,11 @@ public class StockService {
     @Autowired
     private StockRepository stockRepository;
 
+    public boolean isAvailableStock(StockDTO stock) {
+        //TODO: Implement batch processing
+        return stockRepository.findOneByStoreIdAndProductId(stock.getStoreId(), stock.getProductId()).get().getCount() >= stock.getCount();
+    }
+
     public void updateStock(StockDTO stock) {
         stockRepository.save(toStockEntity(stock));
     }

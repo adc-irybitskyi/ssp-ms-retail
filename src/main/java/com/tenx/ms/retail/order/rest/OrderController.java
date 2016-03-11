@@ -23,7 +23,8 @@ public class OrderController {
     @ApiOperation(value = "Add/Update Product Quantity")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Successful retrieval of Order details"),
-        @ApiResponse(code = 412, message = "Invalid OrderEntity"),
+        @ApiResponse(code = 404, message = "Invalid store_id or product_id"),
+        @ApiResponse(code = 412, message = "Precondition failure"),
         @ApiResponse(code = 500, message = "Internal server error")}
     )
     @RequestMapping(value = {"/{storeId:\\d+}"}, method = RequestMethod.POST)

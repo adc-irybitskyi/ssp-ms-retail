@@ -21,23 +21,26 @@ public class StockDTO {
         return productId;
     }
 
-    public void setProductId(Long productId) {
+    public StockDTO setProductId(Long productId) {
         this.productId = productId;
+        return this;
     }
 
     public Long getStoreId() {
         return storeId;
     }
 
-    public void setStoreId(Long storeId) {
+    public StockDTO setStoreId(Long storeId) {
         this.storeId = storeId;
+        return this;
     }
 
     public Long getCount() {
         return count;
     }
 
-    public void setCount(Long count) {
+    public StockDTO setCount(Long count) {
         this.count = count;
+        return this;
     }
 }

@@ -2,9 +2,12 @@ package com.tenx.ms.retail.order.service;
 
 import com.tenx.ms.retail.order.domain.OrderEntity;
 import com.tenx.ms.retail.order.domain.OrderProductEntity;
+import com.tenx.ms.retail.order.exception.ProductNotAvailableException;
 import com.tenx.ms.retail.order.repository.OrderRepository;
 import com.tenx.ms.retail.order.rest.dto.OrderDTO;
 import com.tenx.ms.retail.order.rest.dto.OrderProductDTO;
+import com.tenx.ms.retail.stock.rest.dto.StockDTO;
+import com.tenx.ms.retail.stock.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +19,24 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private StockService stockService;
+
     public OrderDTO addOrder(OrderDTO order) {
-        return toOrderDTO(orderRepository.save(toOrderEntity(order)));
+        order.getProducts().forEach(p -> checkProductAvailability(order.getStoreId(), p));
+        OrderEntity entity = orderRepository.save(toOrderEntity(order));
+        //TODO: Update product count after saving order
+        return toOrderDTO(entity);
+    }
+
+    private void checkProductAvailability(Long storeId, OrderProductDTO p) {
+        if (!stockService.isAvailableStock(new StockDTO()
+            .setStoreId(storeId)
+            .setProductId(p.getProductId())
+            .setCount(p.getCount())
+        )) {
+            throw new ProductNotAvailableException("Product id " + p.getProductId() + " is not available in store id " + storeId);
+        }
     }
 
     private OrderDTO toOrderDTO(OrderEntity order) {

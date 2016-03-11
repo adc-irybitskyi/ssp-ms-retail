@@ -37,7 +37,6 @@ public class StoreService {
     }
 
     public Long addStore(StoreDTO store) {
-        //TODO: throw exception if something wrong
         return storeRepository.save(toStoreEntity(store)).getStoreId();
     }
 
