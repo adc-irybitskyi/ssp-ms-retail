@@ -6,21 +6,33 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "stocks")
-@IdClass(StockPK.class)
+@Table(name = "stocks",
+    uniqueConstraints = @UniqueConstraint(columnNames = { "stock_id", "product_id" }))
 public class StockEntity implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "stock_id")
+    private Long id;
+
     @Column(name = "product_id")
     private Long productId;
 
-    @Id
     @Column(name = "store_id")
     private Long storeId;
 
     @NotNull
     @Column(name = "available_count")
     private Long count;
+
+    public Long getId() {
+        return id;
+    }
+
+    public StockEntity setId(Long id) {
+        this.id = id;
+        return this;
+    }
 
     public Long getProductId() {
         return productId;
@@ -58,25 +70,12 @@ public class StockEntity implements Serializable {
 
         StockEntity that = (StockEntity) o;
 
-        if (productId != null ? !productId.equals(that.productId) : that.productId != null)
-            return false;
-        return storeId != null ? storeId.equals(that.storeId) : that.storeId == null;
+        return id != null ? id.equals(that.id) : that.id == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = productId != null ? productId.hashCode() : 0;
-        result = 31 * result + (storeId != null ? storeId.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "StockEntity{" +
-            "productId=" + productId +
-            ", storeId=" + storeId +
-            ", count=" + count +
-            '}';
+        return id != null ? id.hashCode() : 0;
     }
 }

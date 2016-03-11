@@ -5,7 +5,8 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "order_products")
+@Table(name = "order_products",
+    uniqueConstraints = @UniqueConstraint(columnNames = { "order_id", "product_id" }))
 public class OrderProductEntity implements Serializable {
 
     @Id

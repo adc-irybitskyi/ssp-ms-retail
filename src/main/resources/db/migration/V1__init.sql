@@ -23,16 +23,17 @@ CREATE TABLE products (
 );
 
 CREATE TABLE stocks (
+	stock_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	product_id BIGINT UNSIGNED NOT NULL,
 	store_id BIGINT UNSIGNED NOT NULL,
 	available_count BIGINT UNSIGNED NOT NULL,
-	PRIMARY KEY (product_id, store_id)
+	PRIMARY KEY (stock_id)
 );
 
 CREATE TABLE orders (
 	order_id BIGINT UNSIGNED NOT NULL,
 	store_id BIGINT UNSIGNED NOT NULL,
-	order_date timestamp  NOT NULL,
+	order_date timestamp NOT NULL,
 	status tinyint NOT NULL,
 	first_name VARCHAR(50) NOT NULL,
 	last_name VARCHAR(50) NOT NULL,
