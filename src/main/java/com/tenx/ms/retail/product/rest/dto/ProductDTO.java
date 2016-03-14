@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 public class ProductDTO {
 
@@ -23,7 +24,7 @@ public class ProductDTO {
     @Length(max = 150)
     private String description;
 
-    //TODO: an adhoc SKU allowing only alpha-numeric with a min length of 5 and max of 10
+    @Pattern(regexp = "[a-zA-Z0-9]{5,10}")
     @ApiModelProperty("an adhoc SKU allowing only alpha-numeric with a min length of 5 and max of 10")
     @NotEmpty
     private String sku;
