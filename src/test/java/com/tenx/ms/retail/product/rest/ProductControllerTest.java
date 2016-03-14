@@ -7,6 +7,7 @@ import com.tenx.ms.commons.rest.dto.Paginated;
 import com.tenx.ms.commons.rest.dto.ResourceCreated;
 import com.tenx.ms.commons.tests.AbstractIntegrationTest;
 import com.tenx.ms.retail.RetailServiceApp;
+import com.tenx.ms.retail.product.domain.ProductEntity;
 import com.tenx.ms.retail.product.rest.dto.ProductDTO;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
@@ -25,6 +26,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.File;
 import java.io.IOException;
 
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.*;
@@ -74,8 +76,8 @@ public class ProductControllerTest extends AbstractIntegrationTest {
                 assertEquals("HTTP Status code incorrect", HttpStatus.OK, response.getStatusCode());
 
                 Paginated<ProductDTO> productPaginated = mapper.readValue(received, new TypeReference<Paginated<ProductDTO>>(){});
-                assertThat(productPaginated.getTotalCount(), is(1L));
-                assertThat(productPaginated.getContent().get(0).getName(), is("product-1"));
+                assertThat(productPaginated.getTotalCount(), is(greaterThan(0L)));
+                assertThat(productPaginated.getContent().contains(new ProductDTO().setProductId(productId.longValue())), is(true));
             }
             //get Product by Id
             {

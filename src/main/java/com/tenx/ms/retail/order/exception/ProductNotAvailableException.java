@@ -1,6 +1,8 @@
 package com.tenx.ms.retail.order.exception;
 
-public class ProductNotAvailableException extends RuntimeException {
+import java.util.NoSuchElementException;
+
+public class ProductNotAvailableException extends NoSuchElementException {
     public ProductNotAvailableException() {
     }
 

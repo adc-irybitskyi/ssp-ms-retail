@@ -29,14 +29,12 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.*;
-
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = RetailServiceApp.class)
@@ -97,8 +95,15 @@ public class OrderControllerTest extends AbstractIntegrationTest {
             products.add(new OrderProductDTO().setProductId(productId1).setCount(1L));
             products.add(new OrderProductDTO().setProductId(productId2).setCount(2L));
 
-            ResponseEntity<String> response = getJSONResponse(template, String.format(REQUEST_URI, basePath(), storeId),
-                mapper.writeValueAsString(new OrderDTO().setProducts(products).setFirstName("firstNameValue").setLastName("lastNameValue").setEmail("email@tenx.com").setPhone("1234567890")),
+            ResponseEntity<String> response = getJSONResponse(template,
+                String.format(REQUEST_URI, basePath(),
+                    storeId),
+                mapper.writeValueAsString(new OrderDTO()
+                    .setProducts(products)
+                    .setFirstName("firstNameValue")
+                    .setLastName("lastNameValue")
+                    .setEmail("email@tenx.com")
+                    .setPhone("1234567890")),
                 HttpMethod.POST);
 
             assertEquals("HTTP Status code incorrect", HttpStatus.OK, response.getStatusCode());

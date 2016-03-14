@@ -8,24 +8,30 @@ import com.tenx.ms.retail.order.rest.dto.OrderDTO;
 import com.tenx.ms.retail.order.rest.dto.OrderProductDTO;
 import com.tenx.ms.retail.stock.rest.dto.StockDTO;
 import com.tenx.ms.retail.stock.service.StockService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderService.class);
+
     @Autowired
     private OrderRepository orderRepository;
 
     @Autowired
     private StockService stockService;
 
+    @Transactional
     public OrderDTO addOrder(OrderDTO order) {
         order.getProducts().forEach(p -> checkProductAvailability(order.getStoreId(), p));
         OrderEntity entity = orderRepository.save(toOrderEntity(order));
-        //TODO: Update product count after saving order
+        order.getProducts().forEach(p -> updateCount(order.getStoreId(), p));
         return toOrderDTO(entity);
     }
 
@@ -35,8 +41,17 @@ public class OrderService {
             .setProductId(p.getProductId())
             .setCount(p.getCount())
         )) {
-            throw new ProductNotAvailableException("Product id " + p.getProductId() + " is not available in store id " + storeId);
+            LOGGER.error("There are no available {} items of product id: {} in store id: {}", p.getCount(), p.getProductId(), storeId);
+            throw new ProductNotAvailableException();
         }
+    }
+
+    private void updateCount(Long storeId, OrderProductDTO p) {
+        stockService.increaseCount(new StockDTO()
+            .setStoreId(storeId)
+            .setProductId(p.getProductId())
+            .setCount(-p.getCount())
+        );
     }
 
     private OrderDTO toOrderDTO(OrderEntity order) {

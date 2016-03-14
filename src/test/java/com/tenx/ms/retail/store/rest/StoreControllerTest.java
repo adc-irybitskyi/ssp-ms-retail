@@ -24,7 +24,11 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertEquals;
@@ -45,13 +49,11 @@ public class StoreControllerTest extends AbstractIntegrationTest {
     private File addStore1Request;
 
     @Test
-    public void happyPath() {
+    public void addStore() {
         Integer storeId;
         try {
-            //add Store
             {
-                ResponseEntity<String> response = getJSONResponse(
-                    template,
+                ResponseEntity<String> response = getJSONResponse(template,
                     String.format(REQUEST_URI, basePath()),
                     FileUtils.readFileToString(addStore1Request),
                     HttpMethod.POST);
@@ -63,52 +65,94 @@ public class StoreControllerTest extends AbstractIntegrationTest {
                 storeId = (Integer) rc.getId();
                 assertThat(storeId > 0, is(true));
             }
-            //get All
+
             {
-                ResponseEntity<String> response = getJSONResponse(
-                    template,
-                    String.format(REQUEST_URI, basePath()),
-                    null,
-                    HttpMethod.GET);
-                String received = response.getBody();
+                try{
+                    ResponseEntity<String> response = getJSONResponse(
+                        template,
+                        String.format(REQUEST_URI, basePath()) + storeId,
+                        null,
+                        HttpMethod.GET);
+                    String received = response.getBody();
 
-                assertEquals("HTTP Status code incorrect", HttpStatus.OK, response.getStatusCode());
+                    assertEquals("HTTP Status code incorrect", HttpStatus.OK, response.getStatusCode());
 
-                Paginated<StoreDTO> storePaginated = mapper.readValue(received, new TypeReference<Paginated<StoreDTO>>(){});
-                assertThat(storePaginated.getTotalCount(), is(1L));
-                assertThat(storePaginated.getContent().get(0).getName(), is("store-1"));
+                    StoreDTO store = mapper.readValue(received, StoreDTO.class);
+                    assertThat(store, is(notNullValue()));
+                    assertThat(store.getName(), is("StoreController-store-1"));
+                } catch (IOException e) {
+                    fail(e.getMessage());
+                }
+
             }
-            //get Store by Id
-            {
-                ResponseEntity<String> response = getJSONResponse(
-                    template,
-                    String.format(REQUEST_URI, basePath()) + storeId,
-                    null,
-                    HttpMethod.GET);
-                String received = response.getBody();
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
 
-                assertEquals("HTTP Status code incorrect", HttpStatus.OK, response.getStatusCode());
+    @Test
+    public void getAllStores() {
+        try{
+            ResponseEntity<String> response = getJSONResponse(
+                template,
+                String.format(REQUEST_URI, basePath()),
+                null,
+                HttpMethod.GET);
+            String received = response.getBody();
 
-                StoreDTO store = mapper.readValue(received, StoreDTO.class);
-                assertThat(store, is(notNullValue()));
-                assertThat(store.getName(), is("store-1"));
-            }
-            //get Store by Name
-            {
-                ResponseEntity<String> response = getJSONResponse(
-                    template,
-                    String.format(REQUEST_URI, basePath()) + "store-1",
-                    null,
-                    HttpMethod.GET);
-                String received = response.getBody();
+            assertEquals("HTTP Status code incorrect", HttpStatus.OK, response.getStatusCode());
 
-                assertEquals("HTTP Status code incorrect", HttpStatus.OK, response.getStatusCode());
+            Paginated<StoreDTO> storePaginated = mapper.readValue(received, new TypeReference<Paginated<StoreDTO>>(){});
+            assertThat(storePaginated.getTotalCount(), is(greaterThan(1L)));
+            List<StoreDTO> stores = storePaginated.getContent().stream().filter(s -> s.getStoreId() >= 1001 && s.getStoreId() <= 1002).collect(Collectors.toList());
+            Collections.sort(stores, (o1, o2) -> o1.getStoreId() > o2.getStoreId() ? 1 : -1);
+            assertThat(stores.size(), is(2));
+            assertThat(stores.get(0).getStoreId(), is(1001L));
+            assertThat(stores.get(0).getName(), is("global-store-1"));
+            assertThat(stores.get(1).getName(), is("global-store-2"));
+            assertThat(stores.get(1).getStoreId(), is(1002L));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
 
-                StoreDTO store = mapper.readValue(received, StoreDTO.class);
-                assertThat(store, is(notNullValue()));
-                assertThat(store.getStoreId(), is(storeId.longValue()));
-                assertThat(store.getName(), is("store-1"));
-            }
+    @Test
+    public void getStoreById() {
+        Long storeId = 1001L;
+        try{
+            ResponseEntity<String> response = getJSONResponse(
+                template,
+                String.format(REQUEST_URI, basePath()) + storeId,
+                null,
+                HttpMethod.GET);
+            String received = response.getBody();
+
+            assertEquals("HTTP Status code incorrect", HttpStatus.OK, response.getStatusCode());
+
+            StoreDTO store = mapper.readValue(received, StoreDTO.class);
+            assertThat(store, is(notNullValue()));
+            assertThat(store.getName(), is("global-store-1"));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void getStoreByName() {
+        try{
+        ResponseEntity<String> response = getJSONResponse(
+            template,
+            String.format(REQUEST_URI, basePath()) + "global-store-1",
+            null,
+            HttpMethod.GET);
+        String received = response.getBody();
+
+        assertEquals("HTTP Status code incorrect", HttpStatus.OK, response.getStatusCode());
+
+        StoreDTO store = mapper.readValue(received, StoreDTO.class);
+        assertThat(store, is(notNullValue()));
+        assertThat(store.getStoreId(), is(1001L));
+        assertThat(store.getName(), is("global-store-1"));
         } catch (IOException e) {
             fail(e.getMessage());
         }

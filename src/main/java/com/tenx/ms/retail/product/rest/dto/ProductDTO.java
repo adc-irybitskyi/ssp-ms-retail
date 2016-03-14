@@ -86,4 +86,22 @@ public class ProductDTO {
         this.price = price;
         return this;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        ProductDTO that = (ProductDTO) o;
+
+        return productId != null ? productId.equals(that.productId) : that.productId == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return productId != null ? productId.hashCode() : 0;
+    }
 }
