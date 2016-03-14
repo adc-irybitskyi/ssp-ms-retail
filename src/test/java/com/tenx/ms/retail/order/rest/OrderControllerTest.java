@@ -29,6 +29,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -89,6 +90,23 @@ public class OrderControllerTest extends AbstractIntegrationTest {
             .setProductId(productId2)
             .setCount(2L));
 
+        // Add Order - Invalid Phone Number
+        {
+            ResponseEntity<String> response = getJSONResponse(template,
+                String.format(REQUEST_URI, basePath(),
+                    storeId),
+                mapper.writeValueAsString(new OrderDTO()
+                    .setProducts(Collections.singleton(new OrderProductDTO()
+                        .setProductId(productId1)
+                        .setCount(1L)))
+                    .setFirstName("firstNameValue")
+                    .setLastName("lastNameValue")
+                    .setEmail("email@tenx.com")
+                    .setPhone("12345")),
+                HttpMethod.POST);
+
+            assertEquals("HTTP Status code incorrect", HttpStatus.PRECONDITION_FAILED, response.getStatusCode());
+        }
         // Add Order
         {
             Set<OrderProductDTO> products = new HashSet<>();

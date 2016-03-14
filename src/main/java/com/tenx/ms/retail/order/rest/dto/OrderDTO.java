@@ -1,5 +1,6 @@
 package com.tenx.ms.retail.order.rest.dto;
 
+import com.tenx.ms.commons.validation.constraints.PhoneNumber;
 import com.tenx.ms.retail.order.util.OrderStatus;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Email;
@@ -44,7 +45,7 @@ public class OrderDTO {
     @Size(max = 255)
     private String email;
 
-    //TODO: Add phone validator using regexp - valid 10 digit US phone # (all numeric, no dashes or brackets)
+    @PhoneNumber
     @ApiModelProperty("the purchaser phone number")
     @Size(max = 10)
     private String phone;

@@ -1,5 +1,6 @@
 package com.tenx.ms.retail.order.domain;
 
+import com.tenx.ms.commons.validation.constraints.PhoneNumber;
 import com.tenx.ms.retail.order.util.OrderStatus;
 import com.tenx.ms.retail.product.domain.ProductEntity;
 import org.hibernate.validator.constraints.Email;
@@ -51,7 +52,7 @@ public class OrderEntity implements Serializable {
     @Column(length = 255)
     private String email;
 
-    //TODO: Add phone validator using regexp - valid 10 digit US phone # (all numeric, no dashes or brackets)
+    @PhoneNumber
     @Size(max = 10)
     @Column(length = 10)
     private String phone;
