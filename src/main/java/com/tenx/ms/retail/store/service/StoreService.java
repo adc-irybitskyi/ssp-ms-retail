@@ -40,6 +40,10 @@ public class StoreService {
         return storeRepository.save(toStoreEntity(store)).getStoreId();
     }
 
+    public void deleteStore(Long storeId) {
+        storeRepository.delete(storeId);
+    }
+
     private StoreDTO toStoreDTO(StoreEntity store) {
         return new StoreDTO().setStoreId(store.getStoreId()).
             setName(store.getName());

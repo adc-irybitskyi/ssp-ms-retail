@@ -40,6 +40,10 @@ public class ProductService {
         return productRepository.save(toProductEntity(Product)).getProductId();
     }
 
+    public void deleteProduct(Long productId) {
+        productRepository.delete(productId);
+    }
+
     private ProductDTO toProductDTO(ProductEntity Product) {
         return new ProductDTO().setProductId(Product.getProductId()).
             setName(Product.getName());
