@@ -1,13 +1,9 @@
 package com.tenx.ms.retail.stock.rest;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tenx.ms.commons.config.Profiles;
-import com.tenx.ms.commons.rest.dto.Paginated;
-import com.tenx.ms.commons.rest.dto.ResourceCreated;
 import com.tenx.ms.commons.tests.AbstractIntegrationTest;
 import com.tenx.ms.retail.RetailServiceApp;
-import com.tenx.ms.retail.stock.rest.dto.StockDTO;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,13 +21,13 @@ import org.springframework.web.client.RestTemplate;
 import java.io.File;
 import java.io.IOException;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = RetailServiceApp.class)
 @ActiveProfiles(Profiles.TEST_NOAUTH)
+@SuppressWarnings("PMD")
 public class StockControllerTest extends AbstractIntegrationTest {
     private static final String REQUEST_URI = "%s/v1/stocks/";
 

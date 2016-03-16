@@ -2,10 +2,15 @@ package com.tenx.ms.retail.order.domain;
 
 import com.tenx.ms.commons.validation.constraints.PhoneNumber;
 import com.tenx.ms.retail.order.util.OrderStatus;
-import com.tenx.ms.retail.product.domain.ProductEntity;
 import org.hibernate.validator.constraints.Email;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -140,10 +145,13 @@ public class OrderEntity implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
+        if (this == o) {
             return true;
-        if (o == null || getClass() != o.getClass())
+        }
+
+        if (o == null || getClass() != o.getClass()) {
             return false;
+        }
 
         OrderEntity entity = (OrderEntity) o;
 

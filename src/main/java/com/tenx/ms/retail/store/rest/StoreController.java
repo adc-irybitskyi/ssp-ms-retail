@@ -5,13 +5,21 @@ import com.tenx.ms.commons.rest.dto.Paginated;
 import com.tenx.ms.commons.rest.dto.ResourceCreated;
 import com.tenx.ms.retail.store.rest.dto.StoreDTO;
 import com.tenx.ms.retail.store.service.StoreService;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 @Api(value = "stores", description = "Store Entity Management API")
 @RestController("storeControllerV1")

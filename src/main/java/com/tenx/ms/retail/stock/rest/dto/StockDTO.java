@@ -1,6 +1,7 @@
 package com.tenx.ms.retail.stock.rest.dto;
 
 import io.swagger.annotations.ApiModelProperty;
+
 import javax.validation.constraints.NotNull;
 
 public class StockDTO {

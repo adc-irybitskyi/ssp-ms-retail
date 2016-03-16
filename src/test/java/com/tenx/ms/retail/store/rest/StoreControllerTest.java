@@ -38,6 +38,7 @@ import static org.junit.Assert.fail;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = RetailServiceApp.class)
 @ActiveProfiles(Profiles.TEST_NOAUTH)
+@SuppressWarnings("PMD")
 public class StoreControllerTest extends AbstractIntegrationTest {
     private static final String REQUEST_URI = "%s/v1/stores/";
     private final RestTemplate template = new TestRestTemplate();

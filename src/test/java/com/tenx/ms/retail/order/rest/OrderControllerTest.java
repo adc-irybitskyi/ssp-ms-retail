@@ -35,11 +35,13 @@ import java.util.Set;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = RetailServiceApp.class)
 @ActiveProfiles(Profiles.TEST_NOAUTH)
+@SuppressWarnings("PMD")
 public class OrderControllerTest extends AbstractIntegrationTest {
     private static final String REQUEST_URI = "%s/v1/orders/%s/";
 

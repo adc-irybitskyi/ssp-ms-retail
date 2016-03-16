@@ -5,13 +5,21 @@ import com.tenx.ms.commons.rest.dto.Paginated;
 import com.tenx.ms.commons.rest.dto.ResourceCreated;
 import com.tenx.ms.retail.product.rest.dto.ProductDTO;
 import com.tenx.ms.retail.product.service.ProductService;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 @Api(value = "products", description = "Product Entity Management API")
 @RestController("ProductControllerV1")
@@ -29,12 +37,11 @@ public class ProductController {
         @ApiResponse(code = 500, message = "Internal server error")}
     )
     @RequestMapping(method = RequestMethod.POST)
-    public ResourceCreated addProduct(@Validated @RequestBody
-    ProductDTO Product) {
+    public ResourceCreated addProduct(@Validated @RequestBody ProductDTO product) {
 
-        LOGGER.debug("Add new Product: {}", Product);
+        LOGGER.debug("Add new Product: {}", product);
 
-        return new ResourceCreated<>(productService.addProduct(Product));
+        return new ResourceCreated<>(productService.addProduct(product));
     }
 
 //TODO:    @PreAuthorize("hasRole('ROLE_ADMIN')")
